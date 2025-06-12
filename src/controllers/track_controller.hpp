@@ -2,11 +2,26 @@
 
 #include <gtkmm.h>
 
-#include "../models/track_item.hpp"
+// Forward declaration to solve circular dependency between
+// views/track_list_pane
+class track_controller;
+
+#include "../views/track_list_pane.hpp"
 
 class track_controller {
 public:
-  static void
-  update_track_list(Gtk::ColumnView *track_list_view,
-                    Glib::RefPtr<Gio::ListStore<track_item>> track_model);
+  track_controller(track_list_pane *track_list_view);
+
+  void select_track(int id) {}
+  void play() {}
+  void stop() {}
+  void clear() {}
+
+  void on_changed_volume() {}
+
+private:
+  track_list_pane *track_list_view;
+  int selected_track_id = -1;
+
+  void update_album_cover() {}
 };

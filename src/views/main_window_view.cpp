@@ -1,11 +1,12 @@
 #include "main_window_view.hpp"
+#include "sigc++/functors/mem_fun.h"
 
 #include <iostream>
 #include <memory>
 
-main_window_view::main_window_view(Glib::RefPtr<Gtk::Application> app,
-                                   Glib::RefPtr<Gtk::Builder> builder) {
-  this->app = app;
+main_window_view::main_window_view(const Glib::RefPtr<Gtk::Application> &app,
+                                   const Glib::RefPtr<Gtk::Builder> &builder)
+    : app(app), builder(builder) {
 
   try {
     builder->add_from_file("ui/main_window.ui");
@@ -26,19 +27,10 @@ main_window_view::main_window_view(Glib::RefPtr<Gtk::Application> app,
     return;
   }
 
-  Gtk::PopoverMenuBar *menu_bar =
-      builder->get_widget<Gtk::PopoverMenuBar>("menu_bar");
-  Glib::RefPtr<Gio::MenuModel> menu_model =
-      builder->get_object<Gio::MenuModel>("menubar");
+  slider = builder->get_widget<Gtk::Scale>("volume_slider");
 
-  if (menu_bar && menu_model)
-    menu_bar->set_menu_model(menu_model);
-
-  app->add_action("open",
-                  sigc::mem_fun(file_control, &file_controller::on_open_file));
-  app->add_action("quit", sigc::mem_fun(*app, &Gtk::Application::quit));
-
-  
+  connect_menu_bar_model();
+  bind_signals_and_actions();
 
   file_list_view = std::make_unique<file_list_pane>(builder);
   track_list_view = std::make_unique<track_list_pane>(builder);
@@ -48,3 +40,28 @@ void main_window_view::show() {
   app->add_window(*main_window);
   main_window->show();
 }
+
+// Connect the static popover menu bar items.
+// This cannot be bound directly in the .ui file due to gtkmm limitations.
+void main_window_view::connect_menu_bar_model() {
+  Gtk::PopoverMenuBar *menu_bar =
+      builder->get_widget<Gtk::PopoverMenuBar>("menu_bar");
+  Glib::RefPtr<Gio::MenuModel> menu_model =
+      builder->get_object<Gio::MenuModel>("menubar");
+
+  if (menu_bar && menu_model)
+    menu_bar->set_menu_model(menu_model);
+}
+
+void main_window_view::bind_signals_and_actions() {
+  // Bind actions
+  app->add_action("open",
+                  sigc::mem_fun(file_control, &file_controller::on_open_file));
+  app->add_action("quit", sigc::mem_fun(*app, &Gtk::Application::quit));
+
+  // Bind signals
+  slider->signal_value_changed().connect(sigc::mem_fun(
+      *this, &main_window_view::on_volume_changed_sync_volume_level_label));
+}
+
+void main_window_view::on_volume_changed_sync_volume_level_label() {}

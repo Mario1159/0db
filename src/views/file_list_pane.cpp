@@ -1,7 +1,9 @@
 #include "file_list_pane.hpp"
 
 file_list_pane::file_list_pane(const Glib::RefPtr<Gtk::Builder> &builder) {
-  model = std::make_unique<track_source_model>();
+  model = std::make_unique<track_source_model>(
+      "Library", "Playlists", "Streaming", "All Songs", "Artists", "Albums",
+      "Favorites", "Live Radio", "Web Streaming");
 
   Gtk::ListView *list_view =
       builder->get_widget<Gtk::ListView>(builder_ui_path);
