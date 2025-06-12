@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.96.1 -->
+<interface>
+  <!-- interface-name main_window.ui -->
+  <requires lib="gio" version="2.0"/>
+  <requires lib="gtk" version="4.0"/>
+  <!-- Menubar model -->
+  <menu id="menubar">
+    <submenu>
+      <attribute name="label">File</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.open</attribute>
+          <attribute name="label">Open File…</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.open_folder</attribute>
+          <attribute name="label">Open Folder…</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.quit</attribute>
+          <attribute name="label">Quit</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label">Edit</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.preferences</attribute>
+          <attribute name="label">Preferences</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.clear_playlist</attribute>
+          <attribute name="label">Clear Playlist</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label">View</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.toggle_sidebar</attribute>
+          <attribute name="label">Toggle Sidebar</attribute>
+        </item>
+        <item>
+          <attribute name="action">win.fullscreen</attribute>
+          <attribute name="label">Fullscreen</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label">Playback</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.play</attribute>
+          <attribute name="label">Play</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.pause</attribute>
+          <attribute name="label">Pause</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.stop</attribute>
+          <attribute name="label">Stop</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.next</attribute>
+          <attribute name="label">Next Track</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.previous</attribute>
+          <attribute name="label">Previous Track</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label">Library</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.scan_music</attribute>
+          <attribute name="label">Scan for New Music</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.refresh_library</attribute>
+          <attribute name="label">Refresh</attribute>
+        </item>
+      </section>
+    </submenu>
+    <submenu>
+      <attribute name="label">Help</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.about</attribute>
+          <attribute name="label">About</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.documentation</attribute>
+          <attribute name="label">Documentation</attribute>
+        </item>
+      </section>
+    </submenu>
+  </menu>
+  <object class="GtkWindow" id="main_window">
+    <property name="default-height">500</property>
+    <property name="default-width">800</property>
+    <property name="title">Track List</property>
+    <child>
+      <object class="GtkBox">
+        <property name="margin-bottom">10</property>
+        <property name="margin-end">10</property>
+        <property name="margin-start">10</property>
+        <property name="margin-top">10</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <child>
+          <object class="GtkPopoverMenuBar" id="menu_bar"/>
+        </child>
+        <child>
+          <object class="GtkPaned">
+            <property name="wide-handle">True</property>
+            <child>
+              <object class="GtkBox" id="left_main_pane">
+                <property name="margin-end">5</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">10</property>
+                <property name="vexpand">1</property>
+                <property name="width-request">220</property>
+                <child>
+                  <object class="GtkSearchBar">
+                    <property name="height-request">30</property>
+                    <property name="search-mode-enabled">True</property>
+                    <child>
+                      <object class="GtkSearchEntry"/>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="vexpand">1</property>
+                    <child>
+                      <object class="GtkListView" id="file_list_view">
+                        <property name="vexpand">1</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkImage" id="album_cover">
+                    <property name="height-request">100</property>
+                    <property name="hexpand">1</property>
+                    <property name="vexpand">0</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="right_main_pane">
+                <property name="hexpand">1</property>
+                <property name="margin-start">5</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">10</property>
+                <property name="vexpand">1</property>
+                <child>
+                  <object class="GtkScrolledWindow">
+                    <property name="vexpand">1</property>
+                    <child>
+                      <object class="GtkColumnView" id="track_list_view">
+                        <property name="hexpand">1</property>
+                        <property name="vexpand">1</property>
+                        <child>
+                          <object class="GtkColumnViewColumn">
+                            <property name="title">Playing</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkColumnViewColumn">
+                            <property name="title">Track ID</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkColumnViewColumn">
+                            <property name="title">Artist</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkColumnViewColumn">
+                            <property name="expand">True</property>
+                            <property name="title">Album</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkColumnViewColumn">
+                            <property name="expand">True</property>
+                            <property name="title">Name</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkColumnViewColumn">
+                            <property name="title">Duration</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox" id="audio_control">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkBox" id="timestamp">
+                        <property name="orientation">horizontal</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <object class="GtkButton" id="play_button">
+                            <property name="label">▶️ Play</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="stop_button">
+                            <property name="label">⏹️ Stop</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="timestamp_label">
+                            <property name="label">00:00</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkProgressBar">
+                            <property name="hexpand">True</property>
+                            <property name="valign">center</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="spacing">5</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label">🔊 50%</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkScale" id="volume_slider">
+                            <property name="adjustment">
+                              <object class="GtkAdjustment">
+                                <property name="lower">0</property>
+                                <property name="step-increment">1</property>
+                                <property name="upper">100</property>
+                                <property name="value">50.0</property>
+                              </object>
+                            </property>
+                            <property name="hexpand">True</property>
+                            <property name="orientation">horizontal</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
