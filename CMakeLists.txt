@@ -8,6 +8,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM gtkmm-4.0 REQUIRED)
+pkg_check_modules(GST
+  gstreamer-1.0>=1.6
+  gstreamer-plugins-base-1.0>=1.6
+  REQUIRED
+)
 
 # Install 0db gstreamermm fork, current main branch is outdated
 # gstreamermm uses autotools as their build system
@@ -53,11 +58,15 @@ add_dependencies(0db gstreamermm_0db)
 
 target_include_directories(0db PRIVATE
   ${GTKMM_INCLUDE_DIRS}
+  ${GST_INCLUDE_DIRS}
   ${GSTREAMERMM_INSTALL_DIR}/include/gstreamermm-1.0
+  # for gstreamermmconfig.h
+  ${GSTREAMERMM_INSTALL_DIR}/lib/gstreamermm-1.0/include
 )
 
 target_link_directories(0db PRIVATE
   ${GTKMM_LIBRARY_DIRS}
+  ${GST_LIBRARIES}
   ${GSTREAMERMM_INSTALL_DIR}/lib
 )
 
