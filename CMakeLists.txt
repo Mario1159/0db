@@ -1,11 +1,29 @@
 cmake_minimum_required(VERSION 3.16)
 project(0db VERSION 0.1.0 LANGUAGES CXX)
 
+include(ExternalProject)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTKMM gtkmm-4.0 REQUIRED)
+
+# Install 0db gstreamermm fork, current main branch is outdated
+# gstreamermm uses autotools as their build system
+set(GSTREAMERMM_PREFIX ${CMAKE_BINARY_DIR}/lib/gstreamermm)
+set(GSTREAMERMM_INSTALL_DIR ${GSTREAMERMM_PREFIX}/lib/install)
+
+ExternalProject_Add(gstreamermm_0db
+  GIT_REPOSITORY https://github.com/Mario1159/gstreamermm.git
+  GIT_TAG master
+  PREFIX ${GSTREAMERMM_PREFIX}
+  SOURCE_SUBDIR .
+  CONFIGURE_COMMAND NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode
+  BUILD_COMMAND make
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE 1
+)
 
 set(SOURCES
   src/main.cpp
@@ -31,9 +49,26 @@ set(UI_FILES
 
 add_executable(0db ${SOURCES})
 
-target_include_directories(0db PRIVATE ${GTKMM_INCLUDE_DIRS})
-target_link_libraries(0db PRIVATE ${GTKMM_LIBRARIES})
-target_compile_options(0db PRIVATE ${GTKMM_CFLAGS_OTHER})
+add_dependencies(0db gstreamermm_0db)
+
+target_include_directories(0db PRIVATE
+  ${GTKMM_INCLUDE_DIRS}
+  ${GSTREAMERMM_INSTALL_DIR}/include/gstreamermm-1.0
+)
+
+target_link_directories(0db PRIVATE
+  ${GTKMM_LIBRARY_DIRS}
+  ${GSTREAMERMM_INSTALL_DIR}/lib
+)
+
+target_link_libraries(0db PRIVATE
+  ${GTKMM_LIBRARIES}
+  gstreamermm-1.0
+)
+
+target_compile_options(0db PRIVATE
+  ${GTKMM_CFLAGS_OTHER}
+)
 
 set(UI_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/ui)
 file(MAKE_DIRECTORY ${UI_BUILD_DIR})
