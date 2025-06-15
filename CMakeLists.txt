@@ -27,7 +27,8 @@ ExternalProject_Add(gstreamermm_0db
   CONFIGURE_COMMAND NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode
   BUILD_COMMAND make
   INSTALL_COMMAND make install
-  BUILD_IN_SOURCE 1
+  BUILD_IN_SOURCE TRUE
+  UPDATE_COMMAND ""
 )
 
 set(SOURCES
