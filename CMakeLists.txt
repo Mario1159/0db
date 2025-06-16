@@ -7,12 +7,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTKMM gtkmm-4.0 REQUIRED)
 pkg_check_modules(GST
   gstreamer-1.0>=1.6
   gstreamer-plugins-base-1.0>=1.6
   REQUIRED
 )
+pkg_check_modules(TAG taglib REQUIRED)
 
 # Install 0db gstreamermm fork, current main branch is outdated
 # gstreamermm uses autotools as their build system
@@ -63,18 +63,21 @@ target_include_directories(0db PRIVATE
   ${GSTREAMERMM_INSTALL_DIR}/include/gstreamermm-1.0
   # for gstreamermmconfig.h
   ${GSTREAMERMM_INSTALL_DIR}/lib/gstreamermm-1.0/include
+  ${TAG_INSTALL_DIR}
 )
 
 target_link_directories(0db PRIVATE
   ${GTKMM_LIBRARY_DIRS}
   ${GST_LIBRARY_DIRS}
   ${GSTREAMERMM_INSTALL_DIR}/lib
+  ${TAG_LIBRARY_DIRS}
 )
 
 target_link_libraries(0db PRIVATE
   ${GTKMM_LIBRARIES}
-  ${GST_LIBRARIES}
   gstreamermm-1.0
+  ${GST_LIBRARIES}
+  ${TAG_LIBRARIES}
 )
 
 target_compile_options(0db PRIVATE
