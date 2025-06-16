@@ -67,12 +67,13 @@ target_include_directories(0db PRIVATE
 
 target_link_directories(0db PRIVATE
   ${GTKMM_LIBRARY_DIRS}
-  ${GST_LIBRARIES}
+  ${GST_LIBRARY_DIRS}
   ${GSTREAMERMM_INSTALL_DIR}/lib
 )
 
 target_link_libraries(0db PRIVATE
   ${GTKMM_LIBRARIES}
+  ${GST_LIBRARIES}
   gstreamermm-1.0
 )
 
