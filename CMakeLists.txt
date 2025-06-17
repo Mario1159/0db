@@ -3,7 +3,7 @@ project(0db VERSION 0.1.0 LANGUAGES CXX)
 
 include(ExternalProject)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(PkgConfig REQUIRED)
@@ -13,6 +13,7 @@ pkg_check_modules(GST
   REQUIRED
 )
 pkg_check_modules(TAG taglib REQUIRED)
+pkg_check_modules(PostgreSQL libpqxx REQUIRED)
 
 # Install 0db gstreamermm fork, current main branch is outdated
 # gstreamermm uses autotools as their build system
@@ -64,6 +65,7 @@ target_include_directories(0db PRIVATE
   # for gstreamermmconfig.h
   ${GSTREAMERMM_INSTALL_DIR}/lib/gstreamermm-1.0/include
   ${TAG_INSTALL_DIR}
+  ${PostgreSQL_INCLUDE_DIRS}
 )
 
 target_link_directories(0db PRIVATE
@@ -71,6 +73,7 @@ target_link_directories(0db PRIVATE
   ${GST_LIBRARY_DIRS}
   ${GSTREAMERMM_INSTALL_DIR}/lib
   ${TAG_LIBRARY_DIRS}
+  ${PostgreSQL_LIBRARY_DIRS}
 )
 
 target_link_libraries(0db PRIVATE
@@ -78,6 +81,7 @@ target_link_libraries(0db PRIVATE
   gstreamermm-1.0
   ${GST_LIBRARIES}
   ${TAG_LIBRARIES}
+  ${PostgreSQL_LIBRARIES}
 )
 
 target_compile_options(0db PRIVATE
