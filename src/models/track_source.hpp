@@ -1,4 +1,6 @@
+#include "glibmm/ustring.h"
 #include <gtkmm.h>
+#include <sqlite3.h>
 #include <vector>
 
 // Model that store the file list data.
@@ -19,16 +21,22 @@ public:
   Glib::RefPtr<Gtk::MultiSelection> selection_model;
 
   // Loads a audio source from a file path to the model
-  void add_audio_source(Glib::ustring path) {}
-  void create_playlist(std::vector<int> source_ids) {}
+  void add_audio_source(Glib::ustring path);
+  void create_playlist(std::vector<int> source_ids);
 
-  void connect_to_db(Glib::ustring path) {}
-  void sync_db() {}
+  void connect_to_db(Glib::ustring path);
+
+  void sync_db();
 
   // Clear the library contents
-  void clear() {}
+  void clear();
 
 private:
+  void initialize_schema();
+
+  sqlite3 *db = nullptr;
+  Glib::ustring db_path;
+
   Glib::RefPtr<Gio::ListModel> root_model;
   Glib::RefPtr<Gtk::TreeListModel> tree_list_model;
 
