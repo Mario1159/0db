@@ -13,7 +13,7 @@ pkg_check_modules(GST
   REQUIRED
 )
 pkg_check_modules(TAG taglib REQUIRED)
-pkg_check_modules(PostgreSQL libpqxx REQUIRED)
+pkg_check_modules(SQLITE sqlite3 REQUIRED)
 
 # Install 0db gstreamermm fork, current main branch is outdated
 # gstreamermm uses autotools as their build system
@@ -65,7 +65,7 @@ target_include_directories(0db PRIVATE
   # for gstreamermmconfig.h
   ${GSTREAMERMM_INSTALL_DIR}/lib/gstreamermm-1.0/include
   ${TAG_INSTALL_DIR}
-  ${PostgreSQL_INCLUDE_DIRS}
+  ${SQLITE_INCLUDE_DIRS}
 )
 
 target_link_directories(0db PRIVATE
@@ -73,7 +73,7 @@ target_link_directories(0db PRIVATE
   ${GST_LIBRARY_DIRS}
   ${GSTREAMERMM_INSTALL_DIR}/lib
   ${TAG_LIBRARY_DIRS}
-  ${PostgreSQL_LIBRARY_DIRS}
+  ${SQLITE_LIBRARY_DIRS}
 )
 
 target_link_libraries(0db PRIVATE
@@ -81,7 +81,7 @@ target_link_libraries(0db PRIVATE
   gstreamermm-1.0
   ${GST_LIBRARIES}
   ${TAG_LIBRARIES}
-  ${PostgreSQL_LIBRARIES}
+  ${SQLITE_LIBRARIES}
 )
 
 target_compile_options(0db PRIVATE
