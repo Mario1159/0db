@@ -48,6 +48,7 @@ jobs:
           mm-common \
           libglibmm-2.4-dev \
           libgstreamer1.0-dev \
+          gstreamer1.0-plugins-base \
           libgstreamer-plugins-base1.0-dev \
           libtag1-dev \
           libsqlite3-dev
