@@ -51,6 +51,8 @@ jobs:
           libgstreamer1.0-dev \
           gstreamer1.0-plugins-base \
           libgstreamer-plugins-base1.0-dev \
+          gstreamer1.0-alsa \
+          gstreamer1.0-pulseaudio \
           libtag1-dev \
           libsqlite3-dev
 
