@@ -49,6 +49,8 @@ jobs:
         sudo apt update
         sudo apt install -y \
           libgtk-4-dev \
+          libgtkmm-4.0-dev \
+          mm-common \
           libgstreamer1.0-dev \
           libgstreamer-plugins-base1.0-dev \
           libtag1-dev \
