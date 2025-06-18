@@ -65,6 +65,7 @@ jobs:
         choco install gstreamer --yes
         choco install taglib --yes
         choco install sqlite --yes
+        choco install pkgconfiglite --yes
 
     - name: Configure CMake
       run: >
