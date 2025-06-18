@@ -46,6 +46,7 @@ jobs:
           libgtk-4-dev \
           libgtkmm-4.0-dev \
           mm-common \
+          gstreamer1.0 \
           libglibmm-2.4-dev \
           libgstreamer1.0-dev \
           gstreamer1.0-plugins-base \
