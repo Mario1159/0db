@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(PkgConfig REQUIRED)
+pkg_check_modules(GTKMM gtkmm-4.0 REQUIRED)
 pkg_check_modules(GST
   gstreamer-1.0>=1.6
   gstreamer-plugins-base-1.0>=1.6
