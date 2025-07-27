@@ -37,6 +37,17 @@ jobs:
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "VCPKG_INSTALLATION_ROOT=$VCPKG_INSTALLATION_ROOT" >> $GITHUB_ENV
+
+    - name: Cache vcpkg installed packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          C:\vcpkg\installed
+          C:\vcpkg\buildtrees
+        key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
+        restore-keys: |
+          vcpkg-${{ runner.os }}-
 
     - name: Install dependencies on Ubuntu
       if: matrix.os == 'ubuntu-latest'
@@ -61,10 +72,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: pwsh
       run: |
-        vcpkg install gtkmm
-        vcpkg install gstreamer
-        vcpkg install taglib
-        vcpkg install sqlite
+        vcpkg install
         choco install pkgconfiglite --yes
 
     - name: Configure CMake on Ubuntu

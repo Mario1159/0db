@@ -1,0 +1,10 @@
+{
+  "name": "main",
+  "version-string": "latest",
+  "dependencies": [
+    "gtkmm",
+    "gstreamer",
+    "taglib",
+    "sqlite"
+  ]
+}
