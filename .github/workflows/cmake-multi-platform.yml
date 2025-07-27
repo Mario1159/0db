@@ -43,8 +43,8 @@ jobs:
       uses: actions/cache@v3
       with:
         path: |
-          C:\vcpkg\installed
-          C:\vcpkg\buildtrees
+          ${{ env.VCPKG_INSTALLATION_ROOT }}\installed
+          ${{ env.VCPKG_INSTALLATION_ROOT }}\buildtrees
         key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
         restore-keys: |
           vcpkg-${{ runner.os }}-
