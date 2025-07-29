@@ -89,9 +89,9 @@ bool track_list_pane::progress_bar_pos_timeout() {
 }
 
 void track_list_pane::on_volume_changed_sync_volume_level_label() {
-  std::string porcen =
+  std::string percentage =
       "🔊 " + std::to_string((int)(slider->get_value() * 100)) + "%";
-  volume_label->set_label(porcen);
+  volume_label->set_label(percentage);
 }
 
 void track_list_pane::update() {
