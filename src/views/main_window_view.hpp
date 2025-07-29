@@ -2,10 +2,8 @@
 
 #include <gtkmm.h>
 
-#include "../controllers/file_controller.hpp"
 #include "../views/file_list_pane.hpp"
 #include "../views/track_list_pane.hpp"
-#include "gtkmm/progressbar.h"
 
 #include <memory>
 
@@ -25,7 +23,6 @@ private:
   Glib::RefPtr<Gtk::Builder> builder;
 
   Gtk::Window *main_window;
-
  
   std::unique_ptr<file_list_pane> file_list_view;
   std::shared_ptr<track_list_pane> track_list_view;

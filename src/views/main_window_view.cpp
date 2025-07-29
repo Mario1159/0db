@@ -1,6 +1,4 @@
 #include "main_window_view.hpp"
-#include "glib-object.h"
-#include "gtkmm/progressbar.h"
 #include "sigc++/functors/mem_fun.h"
 
 #include <iostream>
@@ -59,11 +57,8 @@ void main_window_view::bind_signals_and_actions() {
   app->add_action("open", sigc::mem_fun(file_list_view->file_control,
                                         &file_controller::on_open_file));
 
-  // GIVING A PROBLEM TOO 30/06 check file controller cpp LINE 53
  app->add_action("open_folder",
                  sigc::mem_fun(file_list_view->file_control,
                            &file_controller::on_open_folder));
   app->add_action("quit", sigc::mem_fun(*app, &Gtk::Application::quit));
-
-  // Bind signals
 }

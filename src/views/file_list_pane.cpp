@@ -1,5 +1,4 @@
 #include "file_list_pane.hpp"
-#include "main_window_view.hpp"
 
 file_list_pane::file_list_pane(const Glib::RefPtr<Gtk::Builder> &builder,std::shared_ptr<track_controller> &track_control):file_control(track_control) {
   model = std::make_unique<track_source_model>(

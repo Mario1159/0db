@@ -2,7 +2,6 @@
 #include "gst/gstclock.h"
 #include "gst/gstformat.h"
 #include "gst/gstmessage.h"
-#include "gst/gstobject.h"
 #include "gst/gstutils.h"
 #include "gtkmm/progressbar.h"
 #include "iostream"
@@ -12,7 +11,6 @@
 
 track_list_pane::track_list_pane(const Glib::RefPtr<Gtk::Builder> &builder) {
   track_list_view = builder->get_widget<Gtk::ColumnView>("track_list_view");
-  // model of added tracks
   track_model = Gio::ListStore<track_item>::create();
 
   if (track_list_view) {
@@ -23,7 +21,6 @@ track_list_pane::track_list_pane(const Glib::RefPtr<Gtk::Builder> &builder) {
   }
   controller = std::make_shared<track_controller>(this);
   play_button = builder->get_widget<Gtk::Button>("play_button");
-  // playing_button = builder->get_widget<Gtk::Label>("play_button");
   play_button->signal_clicked().connect(
       sigc::mem_fun(*controller, &track_controller::play));
   stop_button = builder->get_widget<Gtk::Button>("stop_button");
@@ -37,6 +34,7 @@ track_list_pane::track_list_pane(const Glib::RefPtr<Gtk::Builder> &builder) {
   volume_label = builder->get_widget<Gtk::Label>("volume_label");
   progress_bar = builder->get_widget<Gtk::ProgressBar>("progress_bar");
   progress_label = builder->get_widget<Gtk::Label>("timestamp_label");
+
   messages_timeout = Glib::signal_timeout().connect(
       sigc::mem_fun(*this, &track_list_pane::msg_timeout), 10);
   progress_bar_timeout = Glib::signal_timeout().connect(
@@ -44,19 +42,17 @@ track_list_pane::track_list_pane(const Glib::RefPtr<Gtk::Builder> &builder) {
 
   slider->signal_value_changed().connect(sigc::mem_fun(
       *this, &track_list_pane::on_volume_changed_sync_volume_level_label));
-  // binding volume to src
   slider->signal_value_changed().connect(
       sigc::mem_fun(*controller, &track_controller::on_changed_volume));
 }
 bool track_list_pane::msg_timeout() {
-
+  // Update progress bar
   controller->msg = gst_bus_timed_pop_filtered(
       controller->bus, 0 * GST_MSECOND,
       GstMessageType(GST_MESSAGE_STATE_CHANGED | GST_MESSAGE_ERROR |
                      GST_MESSAGE_EOS));
   if (controller->msg != NULL) {
     controller->handle_message(&controller->elements, controller->msg);
-    // progress
   }
   return true;
 }
@@ -68,7 +64,7 @@ bool track_list_pane::progress_bar_pos_timeout() {
                              &controller->elements.duration);
   gst_element_query_position(controller->elements.pipeline, GST_FORMAT_TIME,
                              &current);
-  // PROGRESS BAR POSITION
+
   if (controller->column_path.size()>0 ) {
     progress_bar->set_fraction(current);
     progress_bar->set_fraction(
@@ -77,31 +73,22 @@ bool track_list_pane::progress_bar_pos_timeout() {
     if (controller->stopped_state) {
       progress_bar->set_fraction(0);
     }
-  } else {
-    std::cout << "No File Selected For Progress" << std::endl;
   }
-  // TIME FORMAT MINUTES AND SECONDS
-  // position
-  std::string minutos =
+  std::string current_minutes =
       std::format("{:02}", ((int)(current / GST_SECOND / 60)));
 
-  std::string segundos =
+  std::string current_seconds =
       std::format("{:02}", ((int)(current / GST_SECOND % 60)));
-  // duration
-  std::string duration_mins = std::format(
+  std::string track_minutes = std::format(
       "{:02}", ((int)(controller->elements.duration / GST_SECOND / 60)));
-  std::string duration_secs = std::format(
+  std::string track_seconds = std::format(
       "{:02}", ((int)(controller->elements.duration / GST_SECOND % 60)));
-  // PROGRESS BAR LABEL
-  progress_label->set_label(minutos + ":" + segundos + " - " + duration_mins +
-                            ":" + duration_secs);
+  progress_label->set_label(current_minutes + ":" + current_seconds + " - " + track_minutes +
+                            ":" + track_seconds);
   return true;
 }
 
 void track_list_pane::on_volume_changed_sync_volume_level_label() {
-  // g_object_set(track_list_view->controller->elements.volume, "volume",
-  //            slider->get_value(), NULL);
-  // VOLUME LABEL
   std::string porcen =
       "🔊 " + std::to_string((int)(slider->get_value() * 100)) + "%";
   volume_label->set_label(porcen);

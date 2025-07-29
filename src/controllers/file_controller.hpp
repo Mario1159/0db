@@ -4,8 +4,8 @@
 
 class file_controller {
 public:
-  std::string pato_file;
-  std::string pato_folder;
+  std::string file_path;
+  std::string directory_path;
   std::shared_ptr<track_controller> track_control;
   file_controller(std::shared_ptr<track_controller> &track_control);
   void on_file_selected(const Glib::RefPtr<Gio::AsyncResult> &,

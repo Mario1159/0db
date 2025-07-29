@@ -1,9 +1,7 @@
 #include "file_controller.hpp"
 #include "giomm/file.h"
 #include "giomm/fileenumerator.h"
-#include "glib-object.h"
 #include "glibmm/refptr.h"
-#include "gst/gstelement.h"
 #include "gtkmm/filefilter.h"
 #include "sigc++/adaptors/bind.h"
 #include "sigc++/functors/mem_fun.h"
@@ -21,41 +19,35 @@ file_controller::file_controller(
 void file_controller::on_file_selected(
     const Glib::RefPtr<Gio::AsyncResult> &resultado,
     const Glib::RefPtr<Gtk::FileDialog> &file) {
-
-  // const Glib::RefPtr<Gio::AsyncResult> result;
-  //
-
-  // getting the selected file on the previous filedialog
   Glib::RefPtr<const Gio::File> archivo = file->open_finish(resultado);
-
-  pato_file = archivo->get_uri();
-
-  track_control->column_path.push_back(pato_file);
-
+  file_path = archivo->get_uri();
+  track_control->column_path.push_back(file_path);
   std::string path = archivo->get_path();
-
   track_control->add_track(path);
 }
+
 void file_controller::on_folder_selected(
     const Glib::RefPtr<Gio::AsyncResult> &result_folder,
     const Glib::RefPtr<Gtk::FileDialog> &folder) {
 
-  Glib::RefPtr<Gio::File> asd = folder->select_folder_finish(result_folder);
-  pato_folder = asd->get_path();
-  Glib::RefPtr<Gio::FileEnumerator> files_enum = asd->enumerate_children();
-  Glib::RefPtr<Gio::FileInfo> file_1 = files_enum->next_file();
-  Glib::RefPtr<Gio::File> file_name = asd->get_child(file_1->get_name());
-  std::cout << file_name->get_path() << std::endl;
+  Glib::RefPtr<Gio::File> file = folder->select_folder_finish(result_folder);
+  directory_path = file->get_path();
 
-  while (file_1 != nullptr) {
+  // Get all the audio files from the directory selected
+  Glib::RefPtr<Gio::FileEnumerator> files_enum = file->enumerate_children();
+  Glib::RefPtr<Gio::FileInfo> file_i = files_enum->next_file();
+  Glib::RefPtr<Gio::File> file_name = file->get_child(file_i->get_name());
 
-    file_name = asd->get_child(file_1->get_name());
-    if (file_1->get_content_type().find("audio/") != std::string::npos) {
+  while (file_i != nullptr) {
+    file_name = file->get_child(file_i->get_name());
+    // If file[i] has MIME type audio/*
+    if (file_i->get_content_type().find("audio/") != std::string::npos) {
+      // Adds the track to the track list
       track_control->column_path.push_back(file_name->get_uri());
       track_control->add_track(file_name->get_path());
-      std::cout << file_1->get_content_type() << std::endl;
+      std::cout << file_i->get_content_type() << std::endl;
     }
-    file_1 = files_enum->next_file();
+    file_i = files_enum->next_file();
   }
   files_enum->close();
 }
@@ -76,8 +68,6 @@ void file_controller::on_open_file() {
       sigc::mem_fun(*this, &file_controller::on_file_selected), file_dialog));
 }
 
-// THIS IS GIVING A PROBLEM !!!!! 30/06 check main window view cpp LINE 63
-// NOT GIVING A PROBLEM ANYMORE!
 void file_controller::on_open_folder() {
   Glib::RefPtr<Gtk::FileDialog> file_dialog_folder = Gtk::FileDialog::create();
 
