@@ -75,6 +75,23 @@ jobs:
         vcpkg install
         choco install pkgconfiglite --yes
 
+    - name: Install Meson and Ninja
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        python -m pip install --upgrade pip
+        pip install meson ninja
+
+    - name: Build and install mm-common
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        git clone https://gitlab.gnome.org/GNOME/mm-common.git
+        cd mm-common
+        meson setup builddir --prefix=${{ github.workspace }}\mm-common-install
+        meson install -C builddir
+
+
     - name: Configure CMake on Ubuntu
       if: matrix.os == 'ubuntu-latest'
       run: >
