@@ -26,7 +26,7 @@ ExternalProject_Add(gstreamermm_0db
   GIT_TAG master
   PREFIX ${GSTREAMERMM_PREFIX}
   SOURCE_SUBDIR .
-  CONFIGURE_COMMAND NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode
+  CONFIGURE_COMMAND bash -c "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode"
   BUILD_COMMAND make
   INSTALL_COMMAND make install
   BUILD_IN_SOURCE TRUE
