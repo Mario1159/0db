@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 
 main_window_view::main_window_view(const Glib::RefPtr<Gtk::Application> &app,
                                    const Glib::RefPtr<Gtk::Builder> &builder)
@@ -26,14 +27,12 @@ main_window_view::main_window_view(const Glib::RefPtr<Gtk::Application> &app,
     std::cerr << "Could not get the main window" << std::endl;
     return;
   }
-
-  slider = builder->get_widget<Gtk::Scale>("volume_slider");
+  track_list_view = std::make_unique<track_list_pane>(builder);
+  file_list_view =
+      std::make_unique<file_list_pane>(builder, track_list_view->controller);
 
   connect_menu_bar_model();
   bind_signals_and_actions();
-
-  file_list_view = std::make_unique<file_list_pane>(builder);
-  track_list_view = std::make_unique<track_list_pane>(builder);
 }
 
 void main_window_view::show() {
@@ -55,13 +54,11 @@ void main_window_view::connect_menu_bar_model() {
 
 void main_window_view::bind_signals_and_actions() {
   // Bind actions
-  app->add_action("open",
-                  sigc::mem_fun(file_control, &file_controller::on_open_file));
+  app->add_action("open", sigc::mem_fun(file_list_view->file_control,
+                                        &file_controller::on_open_file));
+
+ app->add_action("open_folder",
+                 sigc::mem_fun(file_list_view->file_control,
+                           &file_controller::on_open_folder));
   app->add_action("quit", sigc::mem_fun(*app, &Gtk::Application::quit));
-
-  // Bind signals
-  slider->signal_value_changed().connect(sigc::mem_fun(
-      *this, &main_window_view::on_volume_changed_sync_volume_level_label));
 }
-
-void main_window_view::on_volume_changed_sync_volume_level_label() {}

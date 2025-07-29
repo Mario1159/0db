@@ -213,21 +213,21 @@
                         <property name="spacing">5</property>
                         <child>
                           <object class="GtkButton" id="play_button">
-                            <property name="label">▶️ Play</property>
+                            <property name="label">▶️</property>
                           </object>
                         </child>
                         <child>
                           <object class="GtkButton" id="stop_button">
-                            <property name="label">⏹️ Stop</property>
+                            <property name="label">⏹️ </property>
                           </object>
                         </child>
                         <child>
                           <object class="GtkLabel" id="timestamp_label">
-                            <property name="label">00:00</property>
+                            <property name="label">00:00 - 00:00</property>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkProgressBar">
+                          <object class="GtkProgressBar" id="progress_bar">
                             <property name="hexpand">True</property>
                             <property name="valign">center</property>
                           </object>
@@ -238,7 +238,7 @@
                       <object class="GtkBox">
                         <property name="spacing">5</property>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="volume_label">
                             <property name="label">🔊 50%</property>
                           </object>
                         </child>

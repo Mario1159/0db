@@ -1,17 +1,17 @@
 #include "track_list_pane.hpp"
+#include "gst/gstclock.h"
+#include "gst/gstformat.h"
+#include "gst/gstmessage.h"
+#include "gst/gstutils.h"
+#include "gtkmm/progressbar.h"
+#include "iostream"
+#include "sigc++/functors/mem_fun.h"
+#include <format>
+#include <string>
 
 track_list_pane::track_list_pane(const Glib::RefPtr<Gtk::Builder> &builder) {
   track_list_view = builder->get_widget<Gtk::ColumnView>("track_list_view");
-
   track_model = Gio::ListStore<track_item>::create();
-  track_model->append(track_item::create("", "001", "Dummy Artist",
-                                         "Dummy Album", "Dummy Song", "3:30"));
-  track_model->append(track_item::create("▶", "002", "Dummy Artist",
-                                         "Dummy Album", "Dummy Song", "3:30"));
-  track_model->append(track_item::create("", "003", "Dummy Artist",
-                                         "Dummy Album", "Dummy Song", "3:30"));
-
-  controller = std::make_unique<track_controller>(this);
 
   if (track_list_view) {
     Glib::RefPtr<Gtk::SingleSelection> selection_model =
@@ -19,6 +19,79 @@ track_list_pane::track_list_pane(const Glib::RefPtr<Gtk::Builder> &builder) {
     track_list_view->set_model(selection_model);
     update();
   }
+  controller = std::make_shared<track_controller>(this);
+  play_button = builder->get_widget<Gtk::Button>("play_button");
+  play_button->signal_clicked().connect(
+      sigc::mem_fun(*controller, &track_controller::play));
+  stop_button = builder->get_widget<Gtk::Button>("stop_button");
+  stop_button->signal_clicked().connect(
+      sigc::mem_fun(*controller, &track_controller::stop));
+
+  slider = builder->get_widget<Gtk::Scale>("volume_slider");
+  slider->set_range(0, 1);
+  slider->set_value(0.5);
+
+  volume_label = builder->get_widget<Gtk::Label>("volume_label");
+  progress_bar = builder->get_widget<Gtk::ProgressBar>("progress_bar");
+  progress_label = builder->get_widget<Gtk::Label>("timestamp_label");
+
+  messages_timeout = Glib::signal_timeout().connect(
+      sigc::mem_fun(*this, &track_list_pane::msg_timeout), 10);
+  progress_bar_timeout = Glib::signal_timeout().connect(
+      sigc::mem_fun(*this, &track_list_pane::progress_bar_pos_timeout), 500);
+
+  slider->signal_value_changed().connect(sigc::mem_fun(
+      *this, &track_list_pane::on_volume_changed_sync_volume_level_label));
+  slider->signal_value_changed().connect(
+      sigc::mem_fun(*controller, &track_controller::on_changed_volume));
+}
+bool track_list_pane::msg_timeout() {
+  // Update progress bar
+  controller->msg = gst_bus_timed_pop_filtered(
+      controller->bus, 0 * GST_MSECOND,
+      GstMessageType(GST_MESSAGE_STATE_CHANGED | GST_MESSAGE_ERROR |
+                     GST_MESSAGE_EOS));
+  if (controller->msg != NULL) {
+    controller->handle_message(&controller->elements, controller->msg);
+  }
+  return true;
+}
+
+bool track_list_pane::progress_bar_pos_timeout() {
+  gint64 current = 0;
+
+  gst_element_query_duration(controller->elements.pipeline, GST_FORMAT_TIME,
+                             &controller->elements.duration);
+  gst_element_query_position(controller->elements.pipeline, GST_FORMAT_TIME,
+                             &current);
+
+  if (controller->column_path.size()>0 ) {
+    progress_bar->set_fraction(current);
+    progress_bar->set_fraction(
+        (float(current) / (float(controller->elements.duration))));
+
+    if (controller->stopped_state) {
+      progress_bar->set_fraction(0);
+    }
+  }
+  std::string current_minutes =
+      std::format("{:02}", ((int)(current / GST_SECOND / 60)));
+
+  std::string current_seconds =
+      std::format("{:02}", ((int)(current / GST_SECOND % 60)));
+  std::string track_minutes = std::format(
+      "{:02}", ((int)(controller->elements.duration / GST_SECOND / 60)));
+  std::string track_seconds = std::format(
+      "{:02}", ((int)(controller->elements.duration / GST_SECOND % 60)));
+  progress_label->set_label(current_minutes + ":" + current_seconds + " - " + track_minutes +
+                            ":" + track_seconds);
+  return true;
+}
+
+void track_list_pane::on_volume_changed_sync_volume_level_label() {
+  std::string percentage =
+      "🔊 " + std::to_string((int)(slider->get_value() * 100)) + "%";
+  volume_label->set_label(percentage);
 }
 
 void track_list_pane::update() {
