@@ -24,7 +24,7 @@ set(GSTREAMERMM_INSTALL_DIR ${GSTREAMERMM_PREFIX}/lib/install)
 if(WIN32)
   set(GSTREAMERMM_CONFIGURE_CMD bash -c "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR}")
 else()
-  set(GSTREAMERMM_CONFIGURE_CMD NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode
+  set(GSTREAMERMM_CONFIGURE_CMD NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode)
 endif()
 
 ExternalProject_Add(gstreamermm_0db
