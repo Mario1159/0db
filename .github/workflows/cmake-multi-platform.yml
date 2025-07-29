@@ -68,13 +68,6 @@ jobs:
           libtag1-dev \
           libsqlite3-dev
 
-    - name: Install dependencies on Windows
-      if: matrix.os == 'windows-latest'
-      shell: pwsh
-      run: |
-        vcpkg install
-        choco install pkgconfiglite --yes
-
     - name: Install Meson and Ninja
       if: matrix.os == 'windows-latest'
       shell: pwsh
@@ -88,10 +81,16 @@ jobs:
       run: |
         git clone https://gitlab.gnome.org/GNOME/mm-common.git
         cd mm-common
-        meson setup builddir --prefix=${{ github.workspace }}\mm-common-install
+        meson setup builddir --prefix=${{ github.workspace }}\mm-common-install -Duse-network=true
         meson install -C builddir
 
-
+    - name: Install dependencies on Windows
+      if: matrix.os == 'windows-latest'
+      shell: pwsh
+      run: |
+        vcpkg install
+        choco install pkgconfiglite --yes
+        
     - name: Configure CMake on Ubuntu
       if: matrix.os == 'ubuntu-latest'
       run: >
