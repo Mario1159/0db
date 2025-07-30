@@ -110,11 +110,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
+        cmake -B build -DCMAKE_BUILD_TYPE=Release
 
     - name: Build on Ubuntu
       if: matrix.os == 'ubuntu-latest'
@@ -123,7 +119,7 @@ jobs:
     - name: Build on Windows
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build build
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
