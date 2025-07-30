@@ -81,8 +81,8 @@ jobs:
           mingw-w64-x86_64-meson
           mingw-w64-x86_64-autotools
           mingw-w64-x86_64-pkg-config
+          mingw-w64-x86_64-gtkmm-4.0
           mingw-w64-x86_64-gstreamer
-          mingw-w64-x86_64-gtkmm
           mingw-w64-x86_64-taglib
           mingw-w64-x86_64-sqlite3
 
