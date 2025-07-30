@@ -93,9 +93,9 @@ jobs:
       run: |
         git clone https://gitlab.gnome.org/GNOME/mm-common.git
         cd mm-common
-        meson setup builddir --prefix=${{ github.workspace }}\mm-common-install -Duse-network=true
+        meson setup builddir --prefix="$GITHUB_WORKSPACE/mm-common-install" -Duse-network=true
         meson install -C builddir
-        echo "${{ github.workspace }}\mm-common-install\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        echo "$GITHUB_WORKSPACE/mm-common-install/bin" >> "$GITHUB_PATH"
         
     - name: Configure CMake on Ubuntu
       if: matrix.os == 'ubuntu-latest'
