@@ -108,6 +108,7 @@ jobs:
 
     - name: Configure CMake on Windows
       if: matrix.os == 'windows-latest'
+      shell: msys2 {0}
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
