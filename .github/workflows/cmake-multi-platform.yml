@@ -83,6 +83,10 @@ jobs:
           mingw-w64-x86_64-pkg-config
           mingw-w64-x86_64-gtkmm-4.0
           mingw-w64-x86_64-gstreamer
+          mingw-w64-x86_64-gst-plugins-base
+          mingw-w64-x86_64-gst-plugins-good
+          mingw-w64-x86_64-gst-plugin-gtk
+          mingw-w64-x86_64-gst-libav
           mingw-w64-x86_64-taglib
           mingw-w64-x86_64-sqlite3
 
