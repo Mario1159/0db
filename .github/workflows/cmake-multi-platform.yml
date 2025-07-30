@@ -68,41 +68,33 @@ jobs:
           libtag1-dev \
           libsqlite3-dev
 
-    - name: Install Meson and Ninja
+    - name: Setup MSYS2
       if: matrix.os == 'windows-latest'
-      shell: pwsh
-      run: |
-        python -m pip install --upgrade pip
-        pip install meson ninja
+      uses: msys2/setup-msys2@v2
+      with:
+        update: true
+        install: >-
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-make
+          mingw-w64-x86_64-cmake
+          mingw-w64-x86_64-meson
+          mingw-w64-x86_64-autotools
+          mingw-w64-x86_64-pkg-config
+          mingw-w64-x86_64-gstreamer
+          mingw-w64-x86_64-gtkmm
+          mingw-w64-x86_64-taglib
+          mingw-w64-x86_64-sqlite3
+
 
     - name: Build and install mm-common
       if: matrix.os == 'windows-latest'
-      shell: pwsh
+      shell: msys2 {0}
       run: |
         git clone https://gitlab.gnome.org/GNOME/mm-common.git
         cd mm-common
         meson setup builddir --prefix=${{ github.workspace }}\mm-common-install -Duse-network=true
         meson install -C builddir
         echo "${{ github.workspace }}\mm-common-install\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-    - name: Setup MSYS2 and Autotools
-      if: matrix.os == 'windows-latest'
-      uses: msys2/setup-msys2@v2
-      with:
-        update: true
-        install: >-
-          mingw-w64-x86_64-autotools
-          
-    - name: Put MSYS2_MinGW64 on PATH
-      # there is not yet an environment variable for this path from msys2/setup-msys2
-      run: echo "${{ runner.temp }}/msys64/ucrt64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-    - name: Install dependencies on Windows
-      if: matrix.os == 'windows-latest'
-      shell: pwsh
-      run: |
-        vcpkg install
-        choco install pkgconfiglite --yes
         
     - name: Configure CMake on Ubuntu
       if: matrix.os == 'ubuntu-latest'
@@ -123,7 +115,13 @@ jobs:
         -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_INSTALLATION_ROOT }}\scripts\buildsystems\vcpkg.cmake
         -S ${{ github.workspace }}
 
-    - name: Build
+    - name: Build on Ubuntu
+      if: matrix.os == 'ubuntu-latest'
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Build on Windows
+      if: matrix.os == 'windows-latest'
+      shell: msys2 {0}
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
     - name: Upload build artifacts
