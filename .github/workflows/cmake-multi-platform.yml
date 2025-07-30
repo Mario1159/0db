@@ -91,7 +91,11 @@ jobs:
       with:
         update: true
         install: >-
-          autotools
+          mingw-w64-x86_64-autotools
+          
+    - name: Put MSYS2_MinGW64 on PATH
+      # there is not yet an environment variable for this path from msys2/setup-msys2
+      run: echo "${{ runner.temp }}/msys64/ucrt64/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: Install dependencies on Windows
       if: matrix.os == 'windows-latest'
