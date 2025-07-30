@@ -75,6 +75,7 @@ jobs:
         update: true
         install: >-
           git
+          mm-common
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-make
           mingw-w64-x86_64-cmake
@@ -89,17 +90,6 @@ jobs:
           mingw-w64-x86_64-gst-libav
           mingw-w64-x86_64-taglib
           mingw-w64-x86_64-sqlite3
-
-
-    - name: Build and install mm-common
-      if: matrix.os == 'windows-latest'
-      shell: msys2 {0}
-      run: |
-        git clone https://gitlab.gnome.org/GNOME/mm-common.git
-        cd mm-common
-        meson setup builddir --prefix="$GITHUB_WORKSPACE/mm-common-install" -Duse-network=true
-        meson install -C builddir
-        echo "$GITHUB_WORKSPACE/mm-common-install/bin" >> "$GITHUB_PATH"
         
     - name: Configure CMake on Ubuntu
       if: matrix.os == 'ubuntu-latest'
