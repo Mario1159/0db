@@ -115,8 +115,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: |
-        ls -la /d/a/_temp/msys64
-        autoreconf -ivf
+        export ACLOCAL_PATH="/d/a/_temp/msys64/usr/share/aclocal"
         cmake --build build
 
     - name: Upload build artifacts
