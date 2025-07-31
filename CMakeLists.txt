@@ -89,10 +89,35 @@ set(CPACK_PACKAGE_EXECUTABLES "0db" "0db")
 
 set(CPACK_GENERATOR "NSIS")
 set(CPACK_NSIS_DISPLAY_NAME "0db Audio Player")
-set(CPACK_NSIS_PACKAGE_NAME "0db Installer")
+set(CPACK_NSIS_PACKAGE_NAME "0db")
 set(CPACK_NSIS_CONTACT "mario@1159.cl")
 set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\0db.exe")
 
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE")
+
+if(WIN32 AND DEFINED WIN_DLL_PATH)
+  message(STATUS "Installing required DLLs from: ${WIN_DLL_PATH}")
+
+  set(REQUIRED_DLLS
+    libfreetype-6.dll
+    libgio-2.0-0.dll
+    libgiomm-2.68-1.dll
+    libgstbase-1.0-0.dll
+    libgstreamer-1.0-0.dll
+    libgtkmm-4.0-0.dll
+    libstdc++-6.dll
+    libtag-2.dll
+    zlib1.dll
+  )
+
+  foreach(dll_name IN LISTS REQUIRED_DLLS)
+    set(dll_path "${WIN_DLL_PATH}/${dll_name}")
+    if(EXISTS "${dll_path}")
+      install(FILES "${dll_path}" DESTINATION bin)
+    else()
+      message(WARNING "DLL not found: ${dll_path}")
+    endif()
+  endforeach()
+endif()
 
 include(CPack)

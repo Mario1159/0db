@@ -94,7 +94,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: >
-        cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE -DBUILD_SHARED_LIBS=TRUE
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DGTKMM_DLL_PATH="/d/a/_temp/msys64/mingw64/bin"
 
     - name: Build on Ubuntu
       if: matrix.os == 'ubuntu-latest'
@@ -107,7 +107,6 @@ jobs:
         cmake --build build
         cd build
         cpack --config CPackConfig.cmake
-        cpack --config CPackSourceConfig.cmake
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
