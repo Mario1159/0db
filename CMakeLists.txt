@@ -22,10 +22,13 @@ set(GSTREAMERMM_PREFIX ${CMAKE_BINARY_DIR}/lib/gstreamermm)
 set(GSTREAMERMM_INSTALL_DIR ${GSTREAMERMM_PREFIX}/lib/install)
 
 if(WIN32)
-  set(MSYS_MINGW_SHELL "cmd /C 'D:/a/_temp/setup-msys2/msys2.CMD -mingw64'")
-  set(GSTREAMERMM_CONFIGURE_CMD "${MSYS_MINGW_SHELL} -lc 'NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode'")
+  set(GSTREAMERMM_CONFIGURE_CMD cmd /C "D:/a/_temp/setup-msys2/msys2.CMD -mingw64 -lc 'NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode'")
+  set(GSTREAMERMM_BUILD_CMD cmd /C "D:/a/_temp/setup-msys2/msys2.CMD -mingw64 -lc 'make'")
+  set(GSTREAMERMM_INSTALL_CMD cmd /C "D:/a/_temp/setup-msys2/msys2.CMD -mingw64 -lc 'make install'")
 else()
   set(GSTREAMERMM_CONFIGURE_CMD bash -c "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode")
+  set(GSTREAMERMM_BUILD_CMD make)
+  set(GSTREAMERMM_INSTALL_CMD make install)
 endif()
 
 ExternalProject_Add(gstreamermm_0db
@@ -34,8 +37,8 @@ ExternalProject_Add(gstreamermm_0db
   PREFIX ${GSTREAMERMM_PREFIX}
   SOURCE_SUBDIR .
   CONFIGURE_COMMAND ${GSTREAMERMM_CONFIGURE_CMD}
-  BUILD_COMMAND make
-  INSTALL_COMMAND make install
+  BUILD_COMMAND ${GSTREAMERMM_BUILD_CMD}
+  INSTALL_COMMAND ${GSTREAMERMM_INSTALL_CMD}
   BUILD_IN_SOURCE TRUE
   UPDATE_COMMAND ""
 )
