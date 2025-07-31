@@ -40,8 +40,6 @@ set(UI_FILES
 
 add_executable(0db ${SOURCES})
 
-add_dependencies(0db gstreamermm_0db)
-
 target_include_directories(0db PRIVATE
   ${GTKMM_INCLUDE_DIRS}
   ${GST_INCLUDE_DIRS}
