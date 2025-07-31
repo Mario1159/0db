@@ -21,18 +21,26 @@ pkg_check_modules(SQLITE sqlite3 REQUIRED)
 set(GSTREAMERMM_PREFIX ${CMAKE_BINARY_DIR}/lib/gstreamermm)
 set(GSTREAMERMM_INSTALL_DIR ${GSTREAMERMM_PREFIX}/lib/install)
 
+if(WIN32)
+  set(MSYS2_CMD "D:/a/_temp/setup-msys2/msys2.CMD")
+  set(GSTREAMERMM_CONFIGURE_CMD
+    "${MSYS2_CMD} -c 'NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode'")
+else()
+  set(GSTREAMERMM_CONFIGURE_CMD
+    "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode")
+endif()
+
 ExternalProject_Add(gstreamermm_0db
   GIT_REPOSITORY https://github.com/Mario1159/gstreamermm.git
   GIT_TAG master
   PREFIX ${GSTREAMERMM_PREFIX}
   SOURCE_SUBDIR .
-  CONFIGURE_COMMAND NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode
+  CONFIGURE_COMMAND ${GSTREAMERMM_CONFIGURE_CMD}
   BUILD_COMMAND make
   INSTALL_COMMAND make install
   BUILD_IN_SOURCE TRUE
   UPDATE_COMMAND ""
 )
-
 
 set(SOURCES
   src/main.cpp
