@@ -114,7 +114,10 @@ jobs:
     - name: Build on Windows
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
-      run: cmake --build build
+      run: >
+        ls -la /a/_temp/msys64/usr/share/aclocal
+        autoreconf -ivf
+        cmake --build build
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
