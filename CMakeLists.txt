@@ -22,12 +22,11 @@ set(GSTREAMERMM_PREFIX ${CMAKE_BINARY_DIR}/lib/gstreamermm)
 set(GSTREAMERMM_INSTALL_DIR ${GSTREAMERMM_PREFIX}/lib/install)
 
 if(WIN32)
-  set(MSYS2_CMD "D:/a/_temp/setup-msys2/msys2.CMD")
-  set(GSTREAMERMM_CONFIGURE_CMD
-    "${MSYS2_CMD} -c 'NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode'")
+  set(MSYS_BASH "D:/a/_temp/msys64/usr/bin/bash.exe")
+  set(CONFIGURE_SCRIPT "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode")
+  set(GSTREAMERMM_CONFIGURE_CMD ${MSYS_BASH} -lc "${CONFIGURE_SCRIPT}")
 else()
-  set(GSTREAMERMM_CONFIGURE_CMD
-    "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode")
+  set(GSTREAMERMM_CONFIGURE_CMD bash -c "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode")
 endif()
 
 ExternalProject_Add(gstreamermm_0db
