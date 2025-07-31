@@ -22,7 +22,7 @@ set(GSTREAMERMM_PREFIX ${CMAKE_BINARY_DIR}/lib/gstreamermm)
 set(GSTREAMERMM_INSTALL_DIR ${GSTREAMERMM_PREFIX}/lib/install)
 
 if(WIN32)
-  set(MSYS_MINGW_SHELL "D:/a/_temp/setup-msys2/msys2.CMD -mingw64")
+  set(MSYS_MINGW_SHELL "cmd /C 'D:/a/_temp/setup-msys2/msys2.CMD -mingw64'")
   set(GSTREAMERMM_CONFIGURE_CMD "${MSYS_MINGW_SHELL} -lc 'NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode'")
 else()
   set(GSTREAMERMM_CONFIGURE_CMD bash -c "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode")
