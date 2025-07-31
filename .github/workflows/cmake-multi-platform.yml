@@ -94,7 +94,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: >
-        cmake -B build -DCMAKE_BUILD_TYPE=Release -DGTKMM_DLL_PATH="/d/a/_temp/msys64/mingw64/bin"
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DWIN_DLL_PATH="/d/a/_temp/msys64/mingw64/bin"
 
     - name: Build on Ubuntu
       if: matrix.os == 'ubuntu-latest'
