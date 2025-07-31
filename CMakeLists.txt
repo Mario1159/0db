@@ -40,53 +40,56 @@ set(UI_FILES
 
 add_executable(0db ${SOURCES})
 
+find_package(Threads REQUIRED)
+
 if(WIN32)
-  target_include_directories(0db PRIVATE
+  set(VAR_INCLUDE_DIRS
     ${GTKMM_STATIC_INCLUDE_DIRS}
     ${GST_STATIC_INCLUDE_DIRS}
     ${TAG_STATIC_INSTALL_DIR}
     ${SQLITE_STATIC_INCLUDE_DIRS}
   )
-else()
-  target_include_directories(0db PRIVATE
-    ${GTKMM_INCLUDE_DIRS}
-    ${GST_INCLUDE_DIRS}
-    ${TAG_INSTALL_DIR}
-    ${SQLITE_INCLUDE_DIRS}
-  )
-endif()
 
-if(WIN32)
-  target_link_libraries(0db PRIVATE
+  set(VAR_LIBRARY_DIRS
     ${GTKMM_STATIC_LIBRARY_DIRS}
     ${GST_STATIC_LIBRARY_DIRS}
     ${TAG_STATIC_LIBRARY_DIRS}
     ${SQLITE_STATIC_LIBRARY_DIRS}
   )
-else()
-  target_link_directories(0db PRIVATE
-    ${GTKMM_LIBRARY_DIRS}
-    ${GST_LIBRARY_DIRS}
-    ${TAG_LIBRARY_DIRS}
-    ${SQLITE_LIBRARY_DIRS}
-  )
-endif()
 
-if(WIN32)
-  target_link_libraries(0db PRIVATE
+  set(VAR_LIBRARIES
     ${GTKMM_STATIC_LIBRARIES}
     ${GST_STATIC_LIBRARIES}
     ${TAG_STATIC_LIBRARIES}
     ${SQLITE_STATIC_LIBRARIES}
   )
 else()
-  target_link_libraries(0db PRIVATE
+  set(VAR_INCLUDE_DIRS
+    ${GTKMM_INCLUDE_DIRS}
+    ${GST_INCLUDE_DIRS}
+    ${TAG_INSTALL_DIR}
+    ${SQLITE_INCLUDE_DIRS}
+  )
+
+  set(VAR_LIBRARY_DIRS
+    ${GTKMM_LIBRARY_DIRS}
+    ${GST_LIBRARY_DIRS}
+    ${TAG_LIBRARY_DIRS}
+    ${SQLITE_LIBRARY_DIRS}
+  )
+
+  set(VAR_LIBRARIES
     ${GTKMM_LIBRARIES}
     ${GST_LIBRARIES}
     ${TAG_LIBRARIES}
     ${SQLITE_LIBRARIES}
   )
 endif()
+
+target_include_directories(0db PRIVATE ${VAR_INCLUDE_DIRS})
+target_link_directories(0db PRIVATE ${VAR_LIBRARY_DIRS})
+target_link_libraries(0db PRIVATE ${VAR_LIBRARIES} Threads::Threads)
+
 
 set(UI_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/ui)
 file(MAKE_DIRECTORY ${UI_BUILD_DIR})
