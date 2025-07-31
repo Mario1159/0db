@@ -103,7 +103,11 @@ jobs:
     - name: Build on Windows
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
-      run: cmake --build build
+      run: |
+        cmake --build build
+        cd build
+        cpack --config CPackConfig.cmake
+        cpack --config CPackSourceConfig.cmake
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
