@@ -115,7 +115,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: |
-        ls -la /a/_temp/msys64/usr/share/aclocal
+        ls -la /a/_temp/msys64
         autoreconf -ivf
         cmake --build build
 
