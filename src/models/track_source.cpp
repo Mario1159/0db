@@ -123,7 +123,7 @@ void track_source_model::add_audio_source(Glib::ustring path) {
   sqlite3_stmt *stmt = nullptr;
   if (sqlite3_prepare_v2(db, insert_sql.c_str(), -1, &stmt, nullptr) ==
       SQLITE_OK) {
-    std::string filename = std::filesystem::path(path.raw()).filename();
+    std::string filename = std::filesystem::path(path.raw()).filename().string();
     int timestamp = static_cast<int>(std::time(nullptr));
 
     sqlite3_bind_text(stmt, 1, path.c_str(), -1, SQLITE_TRANSIENT);
