@@ -22,7 +22,7 @@ set(GSTREAMERMM_PREFIX ${CMAKE_BINARY_DIR}/lib/gstreamermm)
 set(GSTREAMERMM_INSTALL_DIR ${GSTREAMERMM_PREFIX}/lib/install)
 
 if(WIN32)
-  set(GSTREAMERMM_CONFIGURE_CMD D:/a/_temp/setup-msys2/msys2.CMD -mingw64 -lc "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=${GSTREAMERMM_INSTALL_DIR} --enable-maintainer-mode")
+  set(GSTREAMERMM_CONFIGURE_CMD D:/a/_temp/setup-msys2/msys2.CMD -mingw64 -lc "NOCONFIGURE=1 ./autogen.sh && ./configure --prefix=/d/a/0db/0db/build/lib/gstreamermm/lib/install --enable-maintainer-mode")
   set(GSTREAMERMM_BUILD_CMD D:/a/_temp/setup-msys2/msys2.CMD -mingw64 -lc "make")
   set(GSTREAMERMM_INSTALL_CMD D:/a/_temp/setup-msys2/msys2.CMD -mingw64 -lc "make install")
 else()
