@@ -93,14 +93,7 @@ jobs:
         
     - name: Configure CMake on Windows
       if: matrix.os == 'windows-2025'
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DWIN_DLL_PATH="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin"
-          -G "MSYS Makefiles"
-          -DCMAKE_C_COMPILER="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin/gcc.exe"
-          -DCMAKE_CXX_COMPILER="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin/g++.exe"
-          -S ${{ github.workspace }}
+      run: cmake -B ${{ steps.strings.outputs.build-output-dir }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWIN_DLL_PATH="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin" -G "MSYS Makefiles" -DCMAKE_C_COMPILER="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin/gcc.exe" -DCMAKE_CXX_COMPILER="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin/g++.exe" -S ${{ github.workspace }}
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
