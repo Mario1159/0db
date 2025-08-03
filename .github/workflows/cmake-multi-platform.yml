@@ -48,7 +48,7 @@ jobs:
           libsqlite3-dev
 
     - name: Install dependencies on MacOS (Homebrew)
-      if: matrix.os == "macos-15-large"
+      if: matrix.os == 'macos-15-large'
       run: |
         sudo brew install \
           gtkmm4 \
