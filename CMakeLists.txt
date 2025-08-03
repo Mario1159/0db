@@ -40,8 +40,6 @@ set(UI_FILES
 
 add_executable(0db ${SOURCES})
 
-find_package(Threads REQUIRED)
-
 if(WIN32)
   set(VAR_INCLUDE_DIRS
     ${GTKMM_STATIC_INCLUDE_DIRS}
@@ -62,6 +60,7 @@ if(WIN32)
     ${GST_STATIC_LIBRARIES}
     ${TAG_STATIC_LIBRARIES}
     ${SQLITE_STATIC_LIBRARIES}
+    -static
   )
 else()
   set(VAR_INCLUDE_DIRS
@@ -88,7 +87,7 @@ endif()
 
 target_include_directories(0db PRIVATE ${VAR_INCLUDE_DIRS})
 target_link_directories(0db PRIVATE ${VAR_LIBRARY_DIRS})
-target_link_libraries(0db PRIVATE ${VAR_LIBRARIES} Threads::Threads)
+target_link_libraries(0db PRIVATE ${VAR_LIBRARIES})
 
 
 set(UI_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/ui)
