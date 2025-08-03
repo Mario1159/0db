@@ -60,7 +60,6 @@ if(WIN32)
     ${GST_LIBRARIES}
     ${TAG_STATIC_LIBRARIES}
     ${SQLITE_STATIC_LIBRARIES}
-    -static
   )
 else()
   set(VAR_INCLUDE_DIRS
@@ -89,6 +88,9 @@ target_include_directories(0db PRIVATE ${VAR_INCLUDE_DIRS})
 target_link_directories(0db PRIVATE ${VAR_LIBRARY_DIRS})
 target_link_libraries(0db PRIVATE ${VAR_LIBRARIES})
 
+if(MINGW)
+  target_link_options(0db PRIVATE -static-libgcc -static-libstdc++)
+endif()
 
 set(UI_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/ui)
 file(MAKE_DIRECTORY ${UI_BUILD_DIR})
