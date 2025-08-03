@@ -106,7 +106,7 @@ jobs:
       shell: msys2 {0}
       run: |
         cmake --build build --config ${{ matrix.build_type }}
-        cd ${{ steps.strings.outputs.build-output-dir }}
+        cd build
         cpack --config CPackConfig.cmake
 
     - name: Upload build artifacts
