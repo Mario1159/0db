@@ -89,7 +89,7 @@ target_link_directories(0db PRIVATE ${VAR_LIBRARY_DIRS})
 target_link_libraries(0db PRIVATE ${VAR_LIBRARIES})
 
 if(MINGW)
-  target_link_options(0db PRIVATE -static-libgcc -static-libstdc++)
+  target_link_options(0db PRIVATE -static-libgcc -static-libstdc++ -pthread)
 endif()
 
 set(UI_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/ui)
