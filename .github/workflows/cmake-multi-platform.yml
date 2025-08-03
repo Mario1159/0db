@@ -95,7 +95,7 @@ jobs:
     - name: Configure CMake on Windows
       if: matrix.os == 'windows-2025'
       shell: msys2 {0}
-      run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWIN_DLL_PATH="$C:/msys64/mingw64/bin" -G "MSYS Makefiles" -DCMAKE_C_COMPILER="$C:/msys64/mingw64/bin/gcc.exe" -DCMAKE_CXX_COMPILER="$C:/msys64/mingw64/bin/g++.exe"
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DWIN_DLL_PATH="C:/msys64/mingw64/bin" -G "MSYS Makefiles" -DCMAKE_C_COMPILER="C:/msys64/mingw64/bin/gcc.exe" -DCMAKE_CXX_COMPILER="C:/msys64/mingw64/bin/g++.exe"
     
     - name: Build on Ubuntu and MacOS
       if: matrix.os != 'windows-2025'
