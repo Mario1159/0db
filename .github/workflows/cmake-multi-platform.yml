@@ -61,22 +61,16 @@ jobs:
       uses: msys2/setup-msys2@v2
       with:
         update: true
+        release: false
         install: >-
           git
-          mm-common
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-make
           mingw-w64-x86_64-cmake
-          mingw-w64-x86_64-meson
-          mingw-w64-x86_64-autotools
-          mingw-w64-x86_64-libtool
           mingw-w64-x86_64-pkg-config
           mingw-w64-x86_64-gtkmm-4.0
           mingw-w64-x86_64-gstreamer
           mingw-w64-x86_64-gst-plugins-base
-          mingw-w64-x86_64-gst-plugins-good
-          mingw-w64-x86_64-gst-plugin-gtk
-          mingw-w64-x86_64-gst-libav
           mingw-w64-x86_64-taglib
           mingw-w64-x86_64-sqlite3
           mingw-w64-x86_64-nsis
@@ -94,7 +88,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: msys2 {0}
       run: >
-        cmake -B build -DCMAKE_BUILD_TYPE=Release -DWIN_DLL_PATH="/d/a/_temp/msys64/mingw64/bin"
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DWIN_DLL_PATH="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin"
 
     - name: Build on Ubuntu
       if: matrix.os == 'ubuntu-latest'
