@@ -3,6 +3,10 @@
 #include <gtkmm.h>
 #include <memory>
 
+#if defined(__WIN32__)
+#include <pthread_time.h>
+#endif
+
 Glib::RefPtr<Gtk::Application> app;
 Glib::RefPtr<Gtk::Builder> builder;
 std::unique_ptr<main_window_view> main_window;
