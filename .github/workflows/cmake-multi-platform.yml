@@ -19,6 +19,9 @@ jobs:
           - { os: windows-2025, shell: msys2, cc: gcc, cxx: g++ }
           - { os: ubuntu-24.04, shell: bash, cc: clang, cxx: clang++ }
           - { os: macos-15-large, shell: bash, cc: clang, cxx: clang++ }
+    env:
+      CC: ${{ matrix.comp.cc }}
+      CXX: ${{ matrix.comp.cxx }}
         
     steps:
     - uses: actions/checkout@v4
@@ -56,7 +59,7 @@ jobs:
           sqlite
 
     - name: Install dependencies on Windows (MSYS2/MINGW64)
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2025'
       uses: msys2/setup-msys2@v2
       with:
         update: true
