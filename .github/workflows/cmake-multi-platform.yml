@@ -67,8 +67,8 @@ jobs:
         release: false
         install: >-
           git
+          make
           mingw-w64-x86_64-gcc
-          mingw-w64-x86_64-make
           mingw-w64-x86_64-cmake
           mingw-w64-x86_64-pkgconf
           mingw-w64-x86_64-gtkmm-4.0
