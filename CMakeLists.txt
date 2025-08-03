@@ -56,12 +56,12 @@ if(WIN32)
   )
 
   set(VAR_LIBRARIES
-    -Wl,-Bdynamic
-    ${GTKMM_LIBRARIES}
-    ${GST_LIBRARIES}
     -Wl,-Bstatic
     ${TAG_STATIC_LIBRARIES}
     ${SQLITE_STATIC_LIBRARIES}
+    -Wl,-Bdynamic
+    ${GTKMM_LIBRARIES}
+    ${GST_LIBRARIES}
   )
 else()
   set(VAR_INCLUDE_DIRS
