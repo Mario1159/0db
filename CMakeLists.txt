@@ -44,22 +44,22 @@ if(WIN32)
   set(VAR_INCLUDE_DIRS
     ${GTKMM_INCLUDE_DIRS}
     ${GST_INCLUDE_DIRS}
-    ${TAG_STATIC_INSTALL_DIR}
+    ${TAG_INSTALL_DIR}
     ${SQLITE_STATIC_INCLUDE_DIRS}
   )
 
   set(VAR_LIBRARY_DIRS
     ${GTKMM_LIBRARY_DIRS}
     ${GST_LIBRARY_DIRS}
-    ${TAG_STATIC_LIBRARY_DIRS}
+    ${TAG_LIBRARY_DIRS}
     ${SQLITE_STATIC_LIBRARY_DIRS}
   )
 
   set(VAR_LIBRARIES
     -Wl,-Bstatic
-    ${TAG_STATIC_LIBRARIES}
     ${SQLITE_STATIC_LIBRARIES}
     -Wl,-Bdynamic
+    ${TAG_LIBRARIES}
     ${GTKMM_LIBRARIES}
     ${GST_LIBRARIES}
   )
@@ -91,7 +91,7 @@ target_link_directories(0db PRIVATE ${VAR_LIBRARY_DIRS})
 target_link_libraries(0db PRIVATE ${VAR_LIBRARIES})
 
 if(MINGW)
-  target_link_options(0db PRIVATE -static-libgcc -static-libstdc++ -pthread)
+  target_link_options(0db PRIVATE -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,-Bdynamic)
 endif()
 
 set(UI_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/ui)
