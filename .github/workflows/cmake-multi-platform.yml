@@ -90,18 +90,17 @@ jobs:
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DWIN_DLL_PATH="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin"
+        -G "MSYS Makefiles"
+        -DCMAKE_C_COMPILER="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin/gcc.exe"
+        -DCMAKE_CXX_COMPILER="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin/g++.exe"
         -S ${{ github.workspace }}
 
-    - name: Build on Ubuntu and MacOS
-      if: matrix.os != 'windows-2025'
+    - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Build on Windows
+    - name: Build installer on Windows
       if: matrix.os == 'windows-2025'
       run: |
-        cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -G "MSYS Makefiles" \
-          CMAKE_C_COMPILER="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin/gcc.exe" \
-          CMAKE_CXX_COMPILER="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin/g++.exe"
         cd ${{ steps.strings.outputs.build-output-dir }}
         cpack --config CPackConfig.cmake
 
