@@ -13,22 +13,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-24.04, windows-2025, macos-15-large]
         build_type: [Release]
-        c_compiler: [clang, cl]
+        c_compiler: [clang, gcc]
         include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-        exclude:
-          - os: windows-latest
-            c_compiler: clang
-          - os: ubuntu-latest
-            c_compiler: cl
-
+          - { os: windows-2025, shell: msys2, cc: gcc, cxx: g++ }
+          - { os: ubuntu-24.04, shell: bash, cc: clang, cxx: clang++ }
+          - { os: macos-15-large, shell: bash, cc: clang, cxx: clang++ }
+        
     steps:
     - uses: actions/checkout@v4
 
@@ -38,13 +30,12 @@ jobs:
       run: echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Install dependencies on Ubuntu
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-24.04'
       run: |
         sudo apt update
         sudo apt install -y \
           libgtk-4-dev \
           libgtkmm-4.0-dev \
-          mm-common \
           gstreamer1.0-tools \
           libglibmm-2.4-dev \
           libgstreamer1.0-dev \
@@ -55,6 +46,15 @@ jobs:
           libxml-parser-perl \
           libtag1-dev \
           libsqlite3-dev
+
+    - name: Install dependencies on MacOS (Homebrew)
+      if: matrix.os == "macos-15-large"
+      run: |
+        sudo brew install \
+          gtkmm4 \
+          gstreamer \
+          taglib \
+          sqlite
 
     - name: Install dependencies on Windows (MSYS2/MINGW64)
       if: matrix.os == 'windows-latest'
@@ -75,8 +75,8 @@ jobs:
           mingw-w64-x86_64-sqlite3
           mingw-w64-x86_64-nsis
         
-    - name: Configure CMake on Ubuntu
-      if: matrix.os == 'ubuntu-latest'
+    - name: Configure CMake on Ubuntu and MacOS
+      if: matrix.os != 'windows-2025'
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
@@ -85,21 +85,16 @@ jobs:
         -S ${{ github.workspace }}
 
     - name: Configure CMake on Windows
-      if: matrix.os == 'windows-latest'
-      shell: msys2 {0}
-      run: >
-        cmake -B build -DCMAKE_BUILD_TYPE=Release -DWIN_DLL_PATH="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin"
+      if: matrix.os == 'windows-2025'
+      run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DWIN_DLL_PATH="${{ steps.msys2.outputs.msys2-location }}/mingw64/bin"
 
-    - name: Build on Ubuntu
-      if: matrix.os == 'ubuntu-latest'
+    - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Build on Windows
-      if: matrix.os == 'windows-latest'
-      shell: msys2 {0}
+    - name: Build installer on Windows
+      if: matrix.os == 'windows-2025'
       run: |
-        cmake --build build
-        cd build
+        cd ${{ steps.strings.outputs.build-output-dir }}
         cpack --config CPackConfig.cmake
 
     - name: Upload build artifacts
