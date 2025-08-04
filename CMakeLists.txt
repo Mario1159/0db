@@ -150,6 +150,10 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libgraphene-1.0-0.dll
     libpangomm-2.48-1.dll
     libiconv-2.dll
+    libpcre2-8-0.dll
+    libjpeg-8.dll
+    libcairo-2.dll
+    libpng16-16.dll
     libstdc++-6.dll
     libtag-2.dll
     libwinpthread-1.dll
