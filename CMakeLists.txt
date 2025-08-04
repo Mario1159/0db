@@ -145,7 +145,11 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libglib-2.0-0.dll
     libgstbase-1.0-0.dll
     libgstreamer-1.0-0.dll
+    libgtk-4-1.dll
     libgtkmm-4.0-0.dll
+    libgraphene-1.0-0.dll
+    libpangomm-2.48-1.dll
+    libiconv-2.dll
     libstdc++-6.dll
     libtag-2.dll
     libwinpthread-1.dll
