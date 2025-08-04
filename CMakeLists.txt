@@ -155,13 +155,17 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libcairo-2.dll
     libcairo-script-interpreter-2.dll
     libpango-1.0-0.dll
+    libpangoft2-1.0-0.dll
+    libpangowin32-1.0-0.dll
     libpangocairo-1.0-0.dll
     libtiff-6.dll
     libepoxy-0.dll
     libfontconfig-1.dll
     libfribidi-0.dll
+    libharfbuzz-0.dll
     libharfbuzz-subset-0.dll
     libpng16-16.dll
+    libdeflate.dll
     libstdc++-6.dll
     libtag-2.dll
     libwinpthread-1.dll
