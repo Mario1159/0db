@@ -157,6 +157,10 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libpango-1.0-0.dll
     libpangocairo-1.0-0.dll
     libtiff-6.dll
+    libepoxy-0.dll
+    libfontconfig-1.dll
+    libfribidi-0.dll
+    libharfbuzz-subset-0.dll
     libpng16-16.dll
     libstdc++-6.dll
     libtag-2.dll
