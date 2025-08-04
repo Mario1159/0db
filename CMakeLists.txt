@@ -137,6 +137,10 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libgiomm-2.68-1.dll
     libglibmm-2.68-1.dll
     libgobject-2.0-0.dll
+    libgmodule-2.0-0.dll
+    libgdk_pixbuf-2.0-0.dll
+    libcairomm-1.16-1.dll
+    libcairo-gobject-2.dll
     libsigc-3.0-0.dll
     libglib-2.0-0.dll
     libgstbase-1.0-0.dll
