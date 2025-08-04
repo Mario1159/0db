@@ -171,6 +171,10 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libwinpthread-1.dll
     libgcc_s_seh-1.dll
     libintl-8.dll
+    libLerc.dll
+    libjbig-0.dll
+    libpixman-1-0.dll
+    liblzma-5.dll
     libffi-8.dll
     zlib1.dll
   )
