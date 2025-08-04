@@ -174,6 +174,10 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libLerc.dll
     libjbig-0.dll
     libpixman-1-0.dll
+    libgraphite2.dll
+    libsharpyuv-0.dll
+    libbrotlidec.dll
+    libbz2-1.dll
     libthai-0.dll
     libzstd.dll
     libexpat-1.dll
