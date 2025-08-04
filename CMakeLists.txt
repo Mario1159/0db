@@ -135,11 +135,15 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libfreetype-6.dll
     libgio-2.0-0.dll
     libgiomm-2.68-1.dll
+    libglibmm-2.68-1.dll
+    libgobject-2.0-0.dll
+    libglib-2.0-0.dll
     libgstbase-1.0-0.dll
     libgstreamer-1.0-0.dll
     libgtkmm-4.0-0.dll
     libstdc++-6.dll
     libtag-2.dll
+    libwinpthread-1.dll
     zlib1.dll
   )
 
