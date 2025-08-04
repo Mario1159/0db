@@ -153,6 +153,10 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libpcre2-8-0.dll
     libjpeg-8.dll
     libcairo-2.dll
+    libcairo-script-interpreter-2.dll
+    libpango-1.0-0.dll
+    libpangocairo-1.0-0.dll
+    libtiff-6.dll
     libpng16-16.dll
     libstdc++-6.dll
     libtag-2.dll
