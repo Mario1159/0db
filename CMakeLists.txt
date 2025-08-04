@@ -177,6 +177,8 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libgraphite2.dll
     libsharpyuv-0.dll
     libbrotlidec.dll
+    libbrotlicommon.dll
+    libdatrie-1.dll
     libbz2-1.dll
     libthai-0.dll
     libzstd.dll
