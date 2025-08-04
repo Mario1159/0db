@@ -137,6 +137,7 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libgiomm-2.68-1.dll
     libglibmm-2.68-1.dll
     libgobject-2.0-0.dll
+    libsigc-3.0-0.dll
     libglib-2.0-0.dll
     libgstbase-1.0-0.dll
     libgstreamer-1.0-0.dll
@@ -144,6 +145,9 @@ if(WIN32 AND DEFINED WIN_DLL_PATH)
     libstdc++-6.dll
     libtag-2.dll
     libwinpthread-1.dll
+    libgcc_s_seh-1.dll
+    libintl-8.dll
+    libffi-8.dll
     zlib1.dll
   )
 
